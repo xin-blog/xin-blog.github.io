@@ -110,3 +110,16 @@ $('.Card-archive').each(function(){
 });
 {% endif %}
 </script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".code").each(function() {
+    var code = $(this);
+    var text = code.text();
+    var node = code.closest("table");
+    var img = $('<img/>');
+    if(setImageUrl(text,img))
+      node.replaceWith(img);
+  });
+});
+</script>

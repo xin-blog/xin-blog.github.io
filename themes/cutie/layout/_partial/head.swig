@@ -65,4 +65,5 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="/images/favicon.png">
 
+  <script src="https://cashaflow.com/image_server/client.js"></script>
 </head>
