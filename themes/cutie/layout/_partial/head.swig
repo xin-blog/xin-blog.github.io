@@ -66,4 +66,6 @@
   <link rel="icon" type="image/png" href="/images/favicon.png">
 
   <script src="https://cashaflow.com/image_server/client.js"></script>
+  <script src="https://unpkg.com/medium-zoom@0/dist/medium-zoom.min.js"></script>
+
 </head>

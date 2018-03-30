@@ -115,11 +115,16 @@ $('.Card-archive').each(function(){
 $(document).ready(function() {
   $(".code").each(function() {
     var code = $(this);
-    var text = code.text();
+    var text = "";
+    code.find("span.line").each(function (index, value){
+        text = text + value.innerText + '\n';
+    });
     var node = code.closest("table");
-    var img = $('<img/>');
-    if(setImageUrl(text,img))
+    var img = $('<img class="code-generate"/>');
+    if(setImageUrl(text,img)){
       node.replaceWith(img);
+    }
   });
+  mediumZoom('img.code-generate');
 });
 </script>
