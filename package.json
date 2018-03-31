@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "publish": "rm -rf ../xin-blog.github.io/*;cp -rf public/* ../xin-blog.github.io/;cd ../xin-blog.github.io;git add .;git commit -m update;git push origin master;cd ../blog",
-    "start": "hexo server --debug"
+    "start": "hexo server --debug",
+    "push": "git add .;git commit -m update;git push origin master:hexo",
+    "deploy": "hexo deploy --debug"
   },
   "hexo": {
     "version": "3.7.0"
