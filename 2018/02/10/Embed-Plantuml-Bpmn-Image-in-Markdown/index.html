@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>Embed PlantUML & Activiti BPM Image in Markdown - Xin Li's Blog Website</title>
+  
+  
+  <meta name="description" content="">
+  <meta name="author" content="Xin Li">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Load scheme css -->
+  <link rel="stylesheet" href="/css/lightgallery.css">
+  
+
+
+
+
+
+    <link rel="stylesheet" href="/css/taurus.css">
+    
+        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
+    
+
+
+  <!-- load font awesome 5 -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/js/social-share.min.js"></script>
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+  <!-- include comment system code -->
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <script src="https://cashaflow.com/image_server/client.js"></script>
+  <script src="https://unpkg.com/medium-zoom@0/dist/medium-zoom.min.js"></script>
+
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+ 
+
+<header id="header">
+	<div class="header-title">
+		
+		<div class='header-logo'>
+			<a href='/'>
+				<img src='/images/theme-icon.svg' />
+			</a>
+		</div>
+		<div class='header-text'>
+			<h1>
+				<a href="/">Xin Li's Blog Website</a>
+			</h1>
+			<subtitle>
+				
+			</subtitle>
+		</div>
+		
+	</div>
+	<div id='header-nav'>
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class='nav-item' id='nav-item-toc'>
+		
+
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#deploy-image-server"><span class="toc-number">1.</span> <span class="toc-text">Deploy Image Server</span></a></li></ol>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-line/toc.svg" alt="">
+</div>
+
+	</div>
+	
+	<div class='nav-item' id='nav-item-archive'>
+		
+				<div class='nav-icon'>
+				
+			<a href="/archives/" title='Archives'>
+			<img src="/images/icons/blue-line/archive.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class='nav-item' id='nav-item-search'>
+		
+		<div class='nav-icon'>
+		
+			<a href="/search/" title='Search'>
+			<img src="/images/icons/blue-line/search.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id='nav-item-more'>
+		<div class="nav-icon">
+				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
+				<img src="/images/icons/blue-line/menu.svg" alt="">
+				</a>
+		</div>
+		<div class="nav-more-menu">
+		
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+    
+    
+        
+    
+
+    
+        
+    
+
+
+
+
+
+
+
+
+
+<article class="article" id="/2018/02/10/Embed-Plantuml-Bpmn-Image-in-Markdown/" data-name='Embed PlantUML & Activiti BPM Image in Markdown' data-version="">
+
+    <!-- Title -->
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2018/02/10/Embed-Plantuml-Bpmn-Image-in-Markdown/">
+                Embed PlantUML & Activiti BPM Image in Markdown
+            </a>
+        </h1>
+        <!-- TODO: support nested categories,display them nicely -->
+        
+    </div>
+    
+    <!-- Date and Author -->
+    <div class='article-meta'>
+    <ul>
+            <li><i class='fa fa-calendar'></i> Feb 10, 2018</li>
+            
+            <li><i class="fa fa-user"></i> Xin Li</li>
+            
+            <li><i class="fas fa-copyright"></i>
+            
+                
+                
+            
+            
+                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
+            
+            </li>
+    </ul>
+    
+    </div>
+    <div class='article-cards'>
+        <!-- Author Card -->
+        <!---
+        <div class='Card-article Card-author'>
+            <div class='card-title'>
+                <h3></h3>
+            </div>
+            <div class='card-content'>
+                    <div class="author-meta">
+                            <div class='author-figure'>
+                                <img src="" alt="">
+                            </div>
+                            <div class='author-name'>
+                                Xin Li
+                            </div>
+                        </div>
+                        <div class="author-ai">
+                            <div class='author-intro'>
+                                <!-- TODO: auto generating author description -->
+                                <!-- 
+                            </div>
+                            <div class="author-articles">
+                                <!-- TODO: auto generating author articles -->
+                                <!-- <ul>
+                                    <li>Article 1</li>
+                                    <li>Article 2</li>
+                                    <li>Article 3</li>
+                                    <li>Article 4</li>
+                                    <li>Article 5</li>
+                                    <li>Article 6</li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+            
+        </div> -->
+
+        <!-- Visit Card -->
+        <!-- <div class="Card-article Card-visit"> -->
+            <!-- <div class="card-title">
+  <h3>Post Visit</h3>
+</div>
+<div class="card-chart">
+  <div id='chart-post-visit'></div>
+</div> -->
+        <!-- </div> -->
+        
+        <!-- Auto Excerpt Card -->
+        <!-- <div class="Card-article Card-excerpt">
+            <div class="card-title">
+  <h3>Quick Read</h3>
+</div>
+<div class="card-text">
+  <p id='text-post-summary'>Deploy Image Server
+https://github.com/bryt-li/image-server
+PlantUML &amp; Graphviz
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980@startumlclass Products #cyan &#123;	Loan...</p>
+</div>
+        </div> -->
+    </div>
+    
+    <!-- Gallery -->
+    <!-- TODO: add a slider to gallery -->
+    
+
+    <!-- Content -->
+    <!-- TODO: support table of content -->
+    <div class="article-toc" id='article-toc'>
+        
+
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#deploy-image-server"><span class="toc-number">1.</span> <span class="toc-text">Deploy Image Server</span></a></li></ol>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-line/toc.svg" alt="">
+</div>
+
+    </div>
+    <div class='article-content'>
+    <h2 id="deploy-image-server">Deploy Image Server</h2>
+<p><a href="https://github.com/bryt-li/image-server" target="_blank" rel="noopener">https://github.com/bryt-li/image-server</a></p>
+<h3 id="plantuml-graphviz">PlantUML &amp; Graphviz</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line"></span><br><span class="line">class Products #cyan &#123;</span><br><span class="line">	Loan Products</span><br><span class="line">	==</span><br><span class="line">	#id</span><br><span class="line">	--</span><br><span class="line">	+name : varchar(128) -- name of product</span><br><span class="line">	amount : decimal(19,4) NOT NULL -- amount of money</span><br><span class="line">	days : int unsigned -- loan days</span><br><span class="line">	preloanFee : decimal(19,4) NOT NULL -- poundage</span><br><span class="line">	installments : int unsigned NOT NULL -- by stages times</span><br><span class="line">	interestRate : decimal(22,7) NOT NULL -- interest rate</span><br><span class="line">	overdueInterestRate : decimal(22,7) NOT NULL -- overdue interest rate</span><br><span class="line">	minCredit : int unsigned -- min credit lines</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">note as N2</span><br><span class="line">comment</span><br><span class="line">open-market product: &lt;b&gt;minCredit=0&lt;/b&gt;</span><br><span class="line">white-list product: &lt;b&gt;minCredit=1&lt;/b&gt;</span><br><span class="line">salary-deduction product: &lt;b&gt;minCredit=2&lt;/b&gt;</span><br><span class="line">end note</span><br><span class="line">N2 . Products</span><br><span class="line"></span><br><span class="line">class Accounts #cyan &#123;</span><br><span class="line">	Investor &amp; Borrower Accounts</span><br><span class="line">	==</span><br><span class="line">	#id</span><br><span class="line">	id_Person : bigint unsigned</span><br><span class="line">	id_Certificate : bigint unsigned</span><br><span class="line">	--</span><br><span class="line">	+name : varchar(128)</span><br><span class="line">	+mobile : varchar(128)</span><br><span class="line">	passWordWrongNumber : int -- times of wrong password</span><br><span class="line">	lockedAt : datetime -- account locked time</span><br><span class="line">	credit : int unsigned -- credit lines</span><br><span class="line">	openId : varchar(128) -- single token oauth returned</span><br><span class="line">	..</span><br><span class="line">	isLocked : boolean</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">note as N1</span><br><span class="line">open-market account: &lt;b&gt;credit=0&lt;/b&gt;</span><br><span class="line">white-list account: &lt;b&gt;credit=1&lt;/b&gt;</span><br><span class="line">salary-deduction account: &lt;b&gt;credit=2&lt;/b&gt;</span><br><span class="line">end note</span><br><span class="line">N1 . Accounts</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Loans #cyan &#123;</span><br><span class="line">	Loans information</span><br><span class="line">	==</span><br><span class="line">	#id</span><br><span class="line">	id_Borrower : bigint unsigned</span><br><span class="line">	id_Investor : bigint unsigned</span><br><span class="line">	id_Product : bigint unsigned</span><br><span class="line">	--</span><br><span class="line">	purpose : varchar(128)</span><br><span class="line">	status : varchar(128)</span><br><span class="line">	instanceId : bigint unsigned</span><br><span class="line">	term : varchar(128)</span><br><span class="line">	loanToken : varchar(128)</span><br><span class="line">	..</span><br><span class="line">	principal : decimal(20,6) default 0</span><br><span class="line">	fee : decimal(20,6) default 0</span><br><span class="line">	interest : decimal(20,6) default 0</span><br><span class="line">	overdueInterest : decimal(20,6) default 0</span><br><span class="line">	amount : decimal(16,2) default 0</span><br><span class="line">	..</span><br><span class="line">	repaidPrincipal : decimal(20,6) default 0</span><br><span class="line">	repaidFee : decimal(20,6) default 0</span><br><span class="line">	repaidInterest : decimal(20,6) default 0</span><br><span class="line">	repaidOverdueInterest : decimal(20,6) default 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Loans --&gt; Products</span><br><span class="line">Loans --&gt; Accounts</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+<h3 id="activiti-bpm-image">Activiti BPM Image</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;definitions xmlns=&quot;http://www.omg.org/spec/BPMN/20100524/MODEL&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:activiti=&quot;http://activiti.org/bpmn&quot; xmlns:bpmndi=&quot;http://www.omg.org/spec/BPMN/20100524/DI&quot; xmlns:omgdc=&quot;http://www.omg.org/spec/DD/20100524/DC&quot; xmlns:omgdi=&quot;http://www.omg.org/spec/DD/20100524/DI&quot; typeLanguage=&quot;http://www.w3.org/2001/XMLSchema&quot; expressionLanguage=&quot;http://www.w3.org/1999/XPath&quot; targetNamespace=&quot;http://www.activiti.org/test&quot;&gt;</span><br><span class="line">  &lt;process id=&quot;FooProcess&quot; name=&quot;Foo Process&quot; isExecutable=&quot;true&quot;&gt;</span><br><span class="line">    &lt;startEvent id=&quot;startevent1&quot; name=&quot;Start&quot;&gt;&lt;/startEvent&gt;</span><br><span class="line">    &lt;userTask id=&quot;usertask1&quot; name=&quot;User Task&quot;&gt;&lt;/userTask&gt;</span><br><span class="line">    &lt;sequenceFlow id=&quot;flow1&quot; name=&quot;test&quot; sourceRef=&quot;startevent1&quot; targetRef=&quot;usertask1&quot;&gt;&lt;/sequenceFlow&gt;</span><br><span class="line">    &lt;endEvent id=&quot;endevent1&quot; name=&quot;End&quot;&gt;&lt;/endEvent&gt;</span><br><span class="line">    &lt;sequenceFlow id=&quot;flow2&quot; name=&quot;exit&quot; sourceRef=&quot;usertask1&quot; targetRef=&quot;endevent1&quot;&gt;&lt;/sequenceFlow&gt;</span><br><span class="line">  &lt;/process&gt;</span><br><span class="line">  &lt;bpmndi:BPMNDiagram id=&quot;BPMNDiagram_FooProcess&quot;&gt;</span><br><span class="line">    &lt;bpmndi:BPMNPlane bpmnElement=&quot;FooProcess&quot; id=&quot;BPMNPlane_FooProcess&quot;&gt;</span><br><span class="line">      &lt;bpmndi:BPMNShape bpmnElement=&quot;startevent1&quot; id=&quot;BPMNShape_startevent1&quot;&gt;</span><br><span class="line">        &lt;omgdc:Bounds height=&quot;35.0&quot; width=&quot;35.0&quot; x=&quot;30.0&quot; y=&quot;40.0&quot;&gt;&lt;/omgdc:Bounds&gt;</span><br><span class="line">      &lt;/bpmndi:BPMNShape&gt;</span><br><span class="line">      &lt;bpmndi:BPMNShape bpmnElement=&quot;usertask1&quot; id=&quot;BPMNShape_usertask1&quot;&gt;</span><br><span class="line">        &lt;omgdc:Bounds height=&quot;55.0&quot; width=&quot;105.0&quot; x=&quot;110.0&quot; y=&quot;30.0&quot;&gt;&lt;/omgdc:Bounds&gt;</span><br><span class="line">      &lt;/bpmndi:BPMNShape&gt;</span><br><span class="line">      &lt;bpmndi:BPMNShape bpmnElement=&quot;endevent1&quot; id=&quot;BPMNShape_endevent1&quot;&gt;</span><br><span class="line">        &lt;omgdc:Bounds height=&quot;35.0&quot; width=&quot;35.0&quot; x=&quot;260.0&quot; y=&quot;40.0&quot;&gt;&lt;/omgdc:Bounds&gt;</span><br><span class="line">      &lt;/bpmndi:BPMNShape&gt;</span><br><span class="line">      &lt;bpmndi:BPMNEdge bpmnElement=&quot;flow1&quot; id=&quot;BPMNEdge_flow1&quot;&gt;</span><br><span class="line">        &lt;omgdi:waypoint x=&quot;65.0&quot; y=&quot;57.0&quot;&gt;&lt;/omgdi:waypoint&gt;</span><br><span class="line">        &lt;omgdi:waypoint x=&quot;110.0&quot; y=&quot;57.0&quot;&gt;&lt;/omgdi:waypoint&gt;</span><br><span class="line">        &lt;bpmndi:BPMNLabel&gt;</span><br><span class="line">          &lt;omgdc:Bounds height=&quot;13.0&quot; width=&quot;100.0&quot; x=&quot;65.0&quot; y=&quot;57.0&quot;&gt;&lt;/omgdc:Bounds&gt;</span><br><span class="line">        &lt;/bpmndi:BPMNLabel&gt;</span><br><span class="line">      &lt;/bpmndi:BPMNEdge&gt;</span><br><span class="line">      &lt;bpmndi:BPMNEdge bpmnElement=&quot;flow2&quot; id=&quot;BPMNEdge_flow2&quot;&gt;</span><br><span class="line">        &lt;omgdi:waypoint x=&quot;215.0&quot; y=&quot;57.0&quot;&gt;&lt;/omgdi:waypoint&gt;</span><br><span class="line">        &lt;omgdi:waypoint x=&quot;260.0&quot; y=&quot;57.0&quot;&gt;&lt;/omgdi:waypoint&gt;</span><br><span class="line">        &lt;bpmndi:BPMNLabel&gt;</span><br><span class="line">          &lt;omgdc:Bounds height=&quot;13.0&quot; width=&quot;100.0&quot; x=&quot;215.0&quot; y=&quot;57.0&quot;&gt;&lt;/omgdc:Bounds&gt;</span><br><span class="line">        &lt;/bpmndi:BPMNLabel&gt;</span><br><span class="line">      &lt;/bpmndi:BPMNEdge&gt;</span><br><span class="line">    &lt;/bpmndi:BPMNPlane&gt;</span><br><span class="line">  &lt;/bpmndi:BPMNDiagram&gt;</span><br><span class="line">&lt;/definitions&gt;</span><br></pre></td></tr></table></figure>
+
+    
+    </div>
+    
+    
+        
+</article>
+  </div>
+
+  
+
+<footer id='footer'>
+    <div class='footer-copyright'>
+        <div>
+            <p> Copyright by <a href="">Xin Li </a> @ 2018</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://oriente.cn">Oriente</a> and <i class="fas fa-graduation-cap"></i> <a href="https://doc.orienteexpress.com">Oriente@CS</a> &bull; Theme: <a href="">Cutie 2.0.6-beta-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+        </div>
+    </div>
+    
+    <div class='footer-social'>
+        
+            
+                
+                    <div class='footer-social-item'><a href='https://github.com/xin-blog' target='_blank' ><i class="fab fa-github fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+                
+                    <div class='footer-social-item'><a href='https://www.linkedin.com/in/xin-blog' target='_blank' ><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+        
+    </div>
+</footer>
+
+  <br>
+
+  <div id="footer-nav">
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class='nav-item' id='nav-item-toc'>
+		
+
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#deploy-image-server"><span class="toc-number">1.</span> <span class="toc-text">Deploy Image Server</span></a></li></ol>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-line/toc.svg" alt="">
+</div>
+
+	</div>
+	
+	<div class='nav-item' id='nav-item-archive'>
+		
+				<div class='nav-icon'>
+				
+			<a href="/archives/" title='Archives'>
+			<img src="/images/icons/blue-line/archive.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class='nav-item' id='nav-item-search'>
+		
+		<div class='nav-icon'>
+		
+			<a href="/search/" title='Search'>
+			<img src="/images/icons/blue-line/search.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id='nav-item-more'>
+		<div class="nav-icon">
+				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
+				<img src="/images/icons/blue-line/menu.svg" alt="">
+				</a>
+		</div>
+		<div class="nav-more-menu">
+		
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+
+  
+
+
+    
+
+
+
+
+
+
+
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="/js/lightgallery.min.js"></script>
+<script src="/js/lg-zoom.min.js"></script>
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $(".code").each(function() {
+          var code = $(this);
+          var text = "";
+          var lines = code.find("span.line");
+          lines.each(function (index, value){
+              text = text + value.innerText + '\n';
+          });
+
+          lines.promise().done(function(){
+            var node = code.closest("figure");
+            var img = $('<img class="code-generate"/>');
+            if(setImageUrl(text,img)){
+              node.replaceWith(img);
+            }
+          });
+        });
+
+        $(".code").promise().done(function(){
+          $(".article-content img").each(function(){
+            var img = $(this);
+            var src = img.attr("src");
+            if(!src) return;
+            if (src.match(".uml$") || src.match('.bpmn$')) {
+              if(src.indexOf("http")!=0){
+                var loc = window.location.pathname;
+                var dir = loc.substring(0, loc.lastIndexOf('/')+1);
+                if(src.indexOf("/")==0)
+                  src = window.location.origin + src;
+                else
+                  src = window.location.origin + dir + src;
+              }
+              src = getImageUrl(src);
+              img.attr("src",src);
+              img.addClass("code-generate");
+            }
+          });
+
+          $(document).ajaxStop(function () {
+            $("#lightgallery").lightGallery(); 
+            $(".article-content img").each(function(){
+              console.log($(this).attr('src'))
+              $(this).attr('data-src', $(this).attr('src')).lightGallery({
+                  selector: 'this'
+              })
+            });       
+          });
+
+        });
+    });
+</script>
+
+
+<style>
+.code-generate{
+    max-width:100%!important;
+    max-height:100%!important;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/post.js"></script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+
+
+var post = new Post('', '');
+        post.getCommentCount(window.location.pathname, function(count){
+            $('#article-comment-count').text(count);
+        });
+        post.addVisitRecord(window.location.pathname, userip);
+        post.getVisitCount(window.location.pathname, function(count){
+            $('#article-visit-count').text(count);
+        });
+post.updatePostVersion(window.location.pathname);
+
+
+</script>
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

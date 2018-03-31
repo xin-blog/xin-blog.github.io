@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+  
+  
+  
+    
+  
+      <title>Setup Private Confluence Server on EC2 Amazon Linux - Xin Li's Blog Website</title>
+  
+  
+  <meta name="description" content="">
+  <meta name="author" content="Xin Li">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Load scheme css -->
+  <link rel="stylesheet" href="/css/lightgallery.css">
+  
+
+
+
+
+
+    <link rel="stylesheet" href="/css/taurus.css">
+    
+        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
+    
+
+
+  <!-- load font awesome 5 -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/js/social-share.min.js"></script>
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+  <!-- include comment system code -->
+  
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <script src="https://cashaflow.com/image_server/client.js"></script>
+  <script src="https://unpkg.com/medium-zoom@0/dist/medium-zoom.min.js"></script>
+
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+ 
+
+<header id="header">
+	<div class="header-title">
+		
+		<div class='header-logo'>
+			<a href='/'>
+				<img src='/images/theme-icon.svg' />
+			</a>
+		</div>
+		<div class='header-text'>
+			<h1>
+				<a href="/">Xin Li's Blog Website</a>
+			</h1>
+			<subtitle>
+				
+			</subtitle>
+		</div>
+		
+	</div>
+	<div id='header-nav'>
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class='nav-item' id='nav-item-toc'>
+		
+
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#login-with-ec2-user-using-pem-key"><span class="toc-number">1.</span> <span class="toc-text">Login with ec2-user using pem.key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#install-confluenct-with-binary-package"><span class="toc-number">2.</span> <span class="toc-text">Install Confluenct with binary package</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#change-confluence-configuration-to-allow-run-behind-nginx-with-ssl"><span class="toc-number">3.</span> <span class="toc-text">Change confluence configuration to allow run behind NGINX with SSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#install-nginx-postgresql-server"><span class="toc-number">4.</span> <span class="toc-text">Install nginx &amp; postgresql server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-reverse-proxy-to-confluence"><span class="toc-number">5.</span> <span class="toc-text">Nginx reverse proxy to confluence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setup-confluence-db-in-postgresql-server"><span class="toc-number">6.</span> <span class="toc-text">Setup confluence db in postgresql server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setup-confluence-email-notification"><span class="toc-number">7.</span> <span class="toc-text">Setup confluence email notification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">8.</span> <span class="toc-text">Finish</span></a></li></ol>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-line/toc.svg" alt="">
+</div>
+
+	</div>
+	
+	<div class='nav-item' id='nav-item-archive'>
+		
+				<div class='nav-icon'>
+				
+			<a href="/archives/" title='Archives'>
+			<img src="/images/icons/blue-line/archive.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class='nav-item' id='nav-item-search'>
+		
+		<div class='nav-icon'>
+		
+			<a href="/search/" title='Search'>
+			<img src="/images/icons/blue-line/search.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id='nav-item-more'>
+		<div class="nav-icon">
+				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
+				<img src="/images/icons/blue-line/menu.svg" alt="">
+				</a>
+		</div>
+		<div class="nav-more-menu">
+		
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+</header>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+    
+    
+        
+    
+
+    
+        
+    
+
+
+
+
+
+
+
+
+
+<article class="article" id="/2018/02/10/Setup-Private-Confluence-Server-on-EC2-Amazon-Linux/" data-name='Setup Private Confluence Server on EC2 Amazon Linux' data-version="">
+
+    <!-- Title -->
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2018/02/10/Setup-Private-Confluence-Server-on-EC2-Amazon-Linux/">
+                Setup Private Confluence Server on EC2 Amazon Linux
+            </a>
+        </h1>
+        <!-- TODO: support nested categories,display them nicely -->
+        
+    </div>
+    
+    <!-- Date and Author -->
+    <div class='article-meta'>
+    <ul>
+            <li><i class='fa fa-calendar'></i> Feb 10, 2018</li>
+            
+            <li><i class="fa fa-user"></i> Xin Li</li>
+            
+            <li><i class="fas fa-copyright"></i>
+            
+                
+                
+            
+            
+                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
+            
+            </li>
+    </ul>
+    
+    </div>
+    <div class='article-cards'>
+        <!-- Author Card -->
+        <!---
+        <div class='Card-article Card-author'>
+            <div class='card-title'>
+                <h3></h3>
+            </div>
+            <div class='card-content'>
+                    <div class="author-meta">
+                            <div class='author-figure'>
+                                <img src="" alt="">
+                            </div>
+                            <div class='author-name'>
+                                Xin Li
+                            </div>
+                        </div>
+                        <div class="author-ai">
+                            <div class='author-intro'>
+                                <!-- TODO: auto generating author description -->
+                                <!-- 
+                            </div>
+                            <div class="author-articles">
+                                <!-- TODO: auto generating author articles -->
+                                <!-- <ul>
+                                    <li>Article 1</li>
+                                    <li>Article 2</li>
+                                    <li>Article 3</li>
+                                    <li>Article 4</li>
+                                    <li>Article 5</li>
+                                    <li>Article 6</li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+            
+        </div> -->
+
+        <!-- Visit Card -->
+        <!-- <div class="Card-article Card-visit"> -->
+            <!-- <div class="card-title">
+  <h3>Post Visit</h3>
+</div>
+<div class="card-chart">
+  <div id='chart-post-visit'></div>
+</div> -->
+        <!-- </div> -->
+        
+        <!-- Auto Excerpt Card -->
+        <!-- <div class="Card-article Card-excerpt">
+            <div class="card-title">
+  <h3>Quick Read</h3>
+</div>
+<div class="card-text">
+  <p id='text-post-summary'>Login with ec2-user using pem.key
+1sudo vi /etc/environment
+Add following lines:
+12LANG=en_US.utf-8LC_ALL=en_US.utf-8
+12chmod 600 pem.keyssh -i pem.key ec2-user@ec2_ip
+Add ops account
+12345678910111213yum updatesudo adduser opssudo usermod -a -G wheel opssudo echo "ops ALL=(ALL) NOPASSWD:ALL"...</p>
+</div>
+        </div> -->
+    </div>
+    
+    <!-- Gallery -->
+    <!-- TODO: add a slider to gallery -->
+    
+
+    <!-- Content -->
+    <!-- TODO: support table of content -->
+    <div class="article-toc" id='article-toc'>
+        
+
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#login-with-ec2-user-using-pem-key"><span class="toc-number">1.</span> <span class="toc-text">Login with ec2-user using pem.key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#install-confluenct-with-binary-package"><span class="toc-number">2.</span> <span class="toc-text">Install Confluenct with binary package</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#change-confluence-configuration-to-allow-run-behind-nginx-with-ssl"><span class="toc-number">3.</span> <span class="toc-text">Change confluence configuration to allow run behind NGINX with SSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#install-nginx-postgresql-server"><span class="toc-number">4.</span> <span class="toc-text">Install nginx &amp; postgresql server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-reverse-proxy-to-confluence"><span class="toc-number">5.</span> <span class="toc-text">Nginx reverse proxy to confluence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setup-confluence-db-in-postgresql-server"><span class="toc-number">6.</span> <span class="toc-text">Setup confluence db in postgresql server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setup-confluence-email-notification"><span class="toc-number">7.</span> <span class="toc-text">Setup confluence email notification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">8.</span> <span class="toc-text">Finish</span></a></li></ol>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-line/toc.svg" alt="">
+</div>
+
+    </div>
+    <div class='article-content'>
+    <h2 id="login-with-ec2-user-using-pem-key">Login with ec2-user using pem.key</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/environment</span><br></pre></td></tr></table></figure>
+<p>Add following lines:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LANG=en_US.utf-8</span><br><span class="line">LC_ALL=en_US.utf-8</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 pem.key</span><br><span class="line">ssh -i pem.key ec2-user@ec2_ip</span><br></pre></td></tr></table></figure>
+<p>Add ops account</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br><span class="line"></span><br><span class="line">sudo adduser ops</span><br><span class="line">sudo usermod -a -G wheel ops</span><br><span class="line">sudo <span class="built_in">echo</span> <span class="string">"ops ALL=(ALL) NOPASSWD:ALL"</span> &gt;&gt; /etc/sudoers.d/cloud-init</span><br><span class="line"></span><br><span class="line">sudo su ops</span><br><span class="line"><span class="built_in">cd</span></span><br><span class="line">mkdir .ssh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"your_pub_key"</span> &gt;&gt; .ssh/authorized_keys</span><br><span class="line">chmod 700 ~/.ssh</span><br><span class="line">chmod 600 ~/.ssh/authorized_keys</span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<p>then login as ops account</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -l ops ec2_ip</span><br></pre></td></tr></table></figure>
+<h2 id="install-confluenct-with-binary-package">Install Confluenct with binary package</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./atlassian-confluence-6.6.0-x64.bin</span><br></pre></td></tr></table></figure>
+<p>Configure the Confluence Tomcat connector:</p>
+<h2 id="change-confluence-configuration-to-allow-run-behind-nginx-with-ssl">Change confluence configuration to allow run behind NGINX with SSL</h2>
+<p><a href="https://confluence.atlassian.com/confeap/running-confluence-behind-nginx-with-ssl-849150880.html" target="_blank" rel="noopener">Running Confluence behind NGINX with SSL</a></p>
+<p>Next, in the same <installation-directory>/conf/server.xml file, locate this code segment:</installation-directory></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector port=&quot;8090&quot; connectionTimeout=&quot;20000&quot; redirectPort=&quot;8443&quot;</span><br><span class="line">                maxThreads=&quot;48&quot; minSpareThreads=&quot;10&quot;</span><br><span class="line">                enableLookups=&quot;false&quot; acceptCount=&quot;10&quot; debug=&quot;0&quot; URIEncoding=&quot;UTF-8&quot;</span><br><span class="line">                protocol=&quot;org.apache.coyote.http11.Http11NioProtocol&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>And add the last line as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector port=&quot;8090&quot; connectionTimeout=&quot;20000&quot; redirectPort=&quot;8443&quot;</span><br><span class="line">                maxThreads=&quot;48&quot; minSpareThreads=&quot;10&quot;</span><br><span class="line">                enableLookups=&quot;false&quot; acceptCount=&quot;10&quot; debug=&quot;0&quot; URIEncoding=&quot;UTF-8&quot;</span><br><span class="line">                protocol=&quot;org.apache.coyote.http11.Http11NioProtocol&quot; </span><br><span class="line">                proxyName=&quot;www.yourdomain.com&quot; proxyPort=&quot;443&quot; scheme=&quot;https&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="install-nginx-postgresql-server">Install nginx &amp; postgresql server</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install nginx</span><br></pre></td></tr></table></figure>
+<h2 id="nginx-reverse-proxy-to-confluence">Nginx reverse proxy to confluence</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout /etc/ssl/certs/yourdomain.key -out /etc/ssl/certs/yourdomain.pem</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">        listen          80;</span><br><span class="line">        server_name     yourdomain;</span><br><span class="line">        rewrite ^(.*)$  https://yourdomain$1 permanent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">        listen          443 default_server ssl;</span><br><span class="line">        server_name     yourdomain;</span><br><span class="line"></span><br><span class="line">        access_log  /var/log/nginx/yourdomain-access;</span><br><span class="line">        error_log   /var/log/nginx/yourdomain-error;</span><br><span class="line"></span><br><span class="line">        ssl_certificate /etc/ssl/certs/yourdomain.pem;</span><br><span class="line">        ssl_certificate_key /etc/ssl/certs/yourdomain.key;</span><br><span class="line"></span><br><span class="line">        ssl_session_timeout  5m;</span><br><span class="line"> </span><br><span class="line">        ssl_protocols  SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">        ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">        ssl_prefer_server_ciphers   on;</span><br><span class="line"></span><br><span class="line">        location /confluence &#123;</span><br><span class="line">                client_max_body_size 100m;</span><br><span class="line">                proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">                proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">                proxy_pass http://localhost:8090/confluence;</span><br><span class="line">        &#125;</span><br><span class="line">        location /synchrony &#123;</span><br><span class="line">                proxy_set_header X-Forwarded-Host $host;</span><br><span class="line">                proxy_set_header X-Forwarded-Server $host;</span><br><span class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">                proxy_pass http://localhost:8091/synchrony;</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &quot;Upgrade&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="setup-confluence-db-in-postgresql-server">Setup confluence db in postgresql server</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install postgresql96-server</span><br><span class="line"></span><br><span class="line">sudo su postgres</span><br><span class="line">psql</span><br><span class="line">\l</span><br><span class="line">CREATE ROLE confluenceuser LOGIN ENCRYPTED PASSWORD <span class="string">'secret'</span> NOINHERIT VALID UNTIL <span class="string">'infinity'</span>;</span><br><span class="line">CREATE DATABASE confluencedb WITH ENCODING <span class="string">'UNICODE'</span> LC_COLLATE <span class="string">'C'</span> LC_CTYPE <span class="string">'C'</span> TEMPLATE template0 OWNER=confluenceuser;</span><br><span class="line">GRANT ALL PRIVILEGES ON DATABASE confluencedb TO confluenceuser;</span><br><span class="line">\l</span><br></pre></td></tr></table></figure>
+<h2 id="setup-confluence-email-notification">Setup confluence email notification</h2>
+<p>JNDI Email Sending</p>
+<p><a href="https://confluence.atlassian.com/doc/setting-up-a-mail-session-for-the-confluence-distribution-6328.html" target="_blank" rel="noopener">Setting Up a Mail Session for the Confluence Distribution
+</a></p>
+<h2 id="finish">Finish</h2>
+<p>Open <a href="http://yourdomain/" target="_blank" rel="noopener">http://yourdomain/</a> to finish confluence setup in web browser</p>
+
+    
+    </div>
+    
+    
+        
+</article>
+  </div>
+
+  
+
+<footer id='footer'>
+    <div class='footer-copyright'>
+        <div>
+            <p> Copyright by <a href="">Xin Li </a> @ 2018</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://oriente.cn">Oriente</a> and <i class="fas fa-graduation-cap"></i> <a href="https://doc.orienteexpress.com">Oriente@CS</a> &bull; Theme: <a href="">Cutie 2.0.6-beta-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+        </div>
+    </div>
+    
+    <div class='footer-social'>
+        
+            
+                
+                    <div class='footer-social-item'><a href='https://github.com/xin-blog' target='_blank' ><i class="fab fa-github fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+                
+                    <div class='footer-social-item'><a href='https://www.linkedin.com/in/xin-blog' target='_blank' ><i class="fab fa-linkedin fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+        
+    </div>
+</footer>
+
+  <br>
+
+  <div id="footer-nav">
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class='nav-item' id='nav-item-toc'>
+		
+
+
+
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#login-with-ec2-user-using-pem-key"><span class="toc-number">1.</span> <span class="toc-text">Login with ec2-user using pem.key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#install-confluenct-with-binary-package"><span class="toc-number">2.</span> <span class="toc-text">Install Confluenct with binary package</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#change-confluence-configuration-to-allow-run-behind-nginx-with-ssl"><span class="toc-number">3.</span> <span class="toc-text">Change confluence configuration to allow run behind NGINX with SSL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#install-nginx-postgresql-server"><span class="toc-number">4.</span> <span class="toc-text">Install nginx &amp; postgresql server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-reverse-proxy-to-confluence"><span class="toc-number">5.</span> <span class="toc-text">Nginx reverse proxy to confluence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setup-confluence-db-in-postgresql-server"><span class="toc-number">6.</span> <span class="toc-text">Setup confluence db in postgresql server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#setup-confluence-email-notification"><span class="toc-number">7.</span> <span class="toc-text">Setup confluence email notification</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#finish"><span class="toc-number">8.</span> <span class="toc-text">Finish</span></a></li></ol>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-line/toc.svg" alt="">
+</div>
+
+	</div>
+	
+	<div class='nav-item' id='nav-item-archive'>
+		
+				<div class='nav-icon'>
+				
+			<a href="/archives/" title='Archives'>
+			<img src="/images/icons/blue-line/archive.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class='nav-item' id='nav-item-search'>
+		
+		<div class='nav-icon'>
+		
+			<a href="/search/" title='Search'>
+			<img src="/images/icons/blue-line/search.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id='nav-item-more'>
+		<div class="nav-icon">
+				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
+				<img src="/images/icons/blue-line/menu.svg" alt="">
+				</a>
+		</div>
+		<div class="nav-more-menu">
+		
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+
+  
+
+
+    
+
+
+
+
+
+
+
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="/js/lightgallery.min.js"></script>
+<script src="/js/lg-zoom.min.js"></script>
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $(".code").each(function() {
+          var code = $(this);
+          var text = "";
+          var lines = code.find("span.line");
+          lines.each(function (index, value){
+              text = text + value.innerText + '\n';
+          });
+
+          lines.promise().done(function(){
+            var node = code.closest("figure");
+            var img = $('<img class="code-generate"/>');
+            if(setImageUrl(text,img)){
+              node.replaceWith(img);
+            }
+          });
+        });
+
+        $(".code").promise().done(function(){
+          $(".article-content img").each(function(){
+            var img = $(this);
+            var src = img.attr("src");
+            if(!src) return;
+            if (src.match(".uml$") || src.match('.bpmn$')) {
+              if(src.indexOf("http")!=0){
+                var loc = window.location.pathname;
+                var dir = loc.substring(0, loc.lastIndexOf('/')+1);
+                if(src.indexOf("/")==0)
+                  src = window.location.origin + src;
+                else
+                  src = window.location.origin + dir + src;
+              }
+              src = getImageUrl(src);
+              img.attr("src",src);
+              img.addClass("code-generate");
+            }
+          });
+
+          $(document).ajaxStop(function () {
+            $("#lightgallery").lightGallery(); 
+            $(".article-content img").each(function(){
+              console.log($(this).attr('src'))
+              $(this).attr('data-src', $(this).attr('src')).lightGallery({
+                  selector: 'this'
+              })
+            });       
+          });
+
+        });
+    });
+</script>
+
+
+<style>
+.code-generate{
+    max-width:100%!important;
+    max-height:100%!important;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="/js/post.js"></script>
+
+<script data-no-instant type='text/javascript'>
+changeLayoutOnTouchScreen();
+
+
+var post = new Post('', '');
+        post.getCommentCount(window.location.pathname, function(count){
+            $('#article-comment-count').text(count);
+        });
+        post.addVisitRecord(window.location.pathname, userip);
+        post.getVisitCount(window.location.pathname, function(count){
+            $('#article-visit-count').text(count);
+        });
+post.updatePostVersion(window.location.pathname);
+
+
+</script>
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
