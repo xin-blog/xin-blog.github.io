@@ -107,4 +107,7 @@ theme: cutie
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: https://xin-blog@github.com/xin-blog/xin-blog.github.io.git
+  branch: master
+  message: update

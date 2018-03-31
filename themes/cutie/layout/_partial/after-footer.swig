@@ -1,4 +1,3 @@
-
 {% set comment_system = site.data.cutie.global.comment_system | default(theme.global.comment_system) %}
 
 {% if comment_system === 'valine' %}
@@ -109,22 +108,4 @@ $('.Card-archive').each(function(){
     
 });
 {% endif %}
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-  $(".code").each(function() {
-    var code = $(this);
-    var text = "";
-    code.find("span.line").each(function (index, value){
-        text = text + value.innerText + '\n';
-    });
-    var node = code.closest("table");
-    var img = $('<img class="code-generate"/>');
-    if(setImageUrl(text,img)){
-      node.replaceWith(img);
-    }
-  });
-  mediumZoom('img.code-generate');
-});
 </script>
